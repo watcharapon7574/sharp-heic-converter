@@ -1,24 +1,19 @@
 FROM node:20
 
-# ติดตั้ง build tools และ libheif ที่รองรับ heic/heif
+# ติดตั้ง libvips และ libheif ด้วย
 RUN apt-get update && \
     apt-get install -y build-essential python3 make gcc g++ libc6-dev \
-    libvips libheif-dev
+    libvips libvips-dev libheif-dev
 
-# ตั้ง working directory
 WORKDIR /app
 
-# ก๊อปปี้ไฟล์ package*
 COPY package*.json ./
 
-# ติดตั้ง dependencies (รวม sharp)
-RUN npm install
+# Build sharp from source ให้ link libheif ได้จริง
+RUN npm install --build-from-source sharp
 
-# ก๊อปปี้ไฟล์ source code ทั้งหมด
 COPY . .
 
-# เปิดพอร์ต 3000
 EXPOSE 3000
 
-# รันเซิร์ฟเวอร์
 CMD ["node", "index.js"]
