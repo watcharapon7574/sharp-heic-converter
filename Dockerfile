@@ -1,8 +1,11 @@
 FROM node:20
 
 RUN apt-get update && \
-    apt-get install -y build-essential python3 make gcc g++ libc6-dev \
-    libvips libvips-dev libheif-dev
+    apt-get install -y --no-install-recommends \
+      build-essential python3 make gcc g++ libc6-dev \
+      libvips libvips-dev libheif-dev libheif1 libde265-0 libde265-dev \
+      libx265-192 libx265-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
